@@ -4,6 +4,9 @@ tasks:
   - name: Compile Plugin
     init: ./gradlew build
     command: "nodemon --watch src/ --exec \"./gradlew build && cp build/libs/*.jar server/plugins/\" --ext java,yml"
-  - name: "Create Server"
+  - name: "Server"
     init: scripts/build_server.sh
     command: cd server && /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java -jar server.jar
+  - name: "Run ngrok"
+    init: "ngrok config add-authtoken 1n6QgKIQuUMr7doqfXPmpYE6dDr_22RYRZv8Z95fNg93TQn89"
+    command: "ngrok tcp 25565"
