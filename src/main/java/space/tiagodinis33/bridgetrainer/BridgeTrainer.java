@@ -18,11 +18,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.google.common.collect.Sets;
 
 public final class BridgeTrainer extends JavaPlugin implements Listener {
-    Plot plot = new Plot(
+    Plot plot1 = new Plot(
         new AABB(100, 245, 96, 106, 256, 131), 
         new Location(Bukkit.getWorld("world"), 103, 251, 102)
     );
-    HashSet<Plot> plots = Sets.newHashSet(plot);
+    Plot plot2 = new Plot(
+        new AABB(84, 245, 90, 106, 256, 131), 
+        new Location(Bukkit.getWorld("world"), 87, 251, 103)
+    );
+    HashSet<Plot> plots = Sets.newHashSet(plot1, plot2);
     @Override
     public void onEnable() {
         for(Player player : Bukkit.getOnlinePlayers()){
