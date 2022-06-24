@@ -3,6 +3,7 @@ package space.tiagodinis33.bridgetrainer;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -98,6 +99,7 @@ public class Plot {
                     old_material,
                     data
                 );
+            falling_block.setVelocity(new Vector(new Random().nextDouble() % 10, 0, new Random().nextDouble() % 10));
             Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(BridgeTrainer.class), () -> {
                 falling_block.remove();
             }, 20*3);
