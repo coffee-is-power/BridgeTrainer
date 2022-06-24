@@ -13,8 +13,10 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,7 +26,8 @@ public class Plot {
     final AABB bounds;
     Optional<Player> owner = Optional.empty();
     final Location spawn;
-
+    boolean started = false;
+    long started_time_milis = -1;
     public Plot(AABB bounds, Location spawn) {
         this(bounds, spawn, null);
     }
@@ -51,6 +54,18 @@ public class Plot {
             }
         }
         @EventHandler
+        public void onPressurePlatePress(PlayerInteractEvent e){
+            if(e.getPlayer().equals(owner.get())){
+                if(e.getAction() == Action.PHYSICAL){
+                    if(e.getClickedBlock().getType() == Material.GOLD_PLATE){
+                        if(started){
+                            end();
+                        }
+                    }
+                }
+            }
+        }
+        @EventHandler
         public void onFallingBlockCollision(EntityChangeBlockEvent e){
             if(e.getEntity() instanceof FallingBlock) {
                 e.setCancelled(true);
@@ -67,12 +82,26 @@ public class Plot {
                     e.setCancelled(true);
                     e.getPlayer().sendMessage("§c[BridgeTrainer] You cannot place blocks out of bounds");
                 } else {
-                    
+                    if(!started){
+                        start();
+                    }
                     Block block = e.getBlock();
                     placed_blocks.add(new Vector(block.getX(), block.getY(), block.getZ()));
                 }
             }
         }
+    }
+    public void start(){
+        started = true;
+        started_time_milis = System.currentTimeMillis();
+        owner.get().sendMessage("§e[BridgeTrainer] §aYou begun bridging, GO!");
+    }
+    public void end(){
+        owner.get().sendMessage("§e[BridgeTrainer] §aGood job! You took " + (System.currentTimeMillis() - started_time_milis)/1000 + "s to complete the bridge!");
+        spawn_player(owner.get());
+        reset_plot();
+        started = false;
+        started_time_milis = -1;
     }
     /**
      * This is called when the player looses
@@ -81,6 +110,11 @@ public class Plot {
     private void player_lost(Player player){
         spawn_player(player);
         reset_plot();
+        if(started){
+            owner.get().sendMessage("§e[BridgeTrainer] §cYou fell! §aYou took " + (System.currentTimeMillis() - started_time_milis)/1000 + "s!");
+        }
+        started = false;
+        started_time_milis = -1;
     }
     private void reset_plot(){
         for(Vector block_pos : placed_blocks){
