@@ -1,6 +1,6 @@
 name: BridgeTrainer
 version: '${version}'
 main: space.tiagodinis33.bridgetrainer.BridgeTrainer
-prefix: BridgeSoftware
+prefix: BridgeTrainer
 authors: [ tiagodinis33 ]
 description: Plugin for practicing bridging methods
