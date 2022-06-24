@@ -16,8 +16,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -42,9 +44,17 @@ public class Plot {
     public void spawn_player(Player player){
         this.owner = Optional.of(player);
         player.teleport(this.spawn);
+        player.getInventory().clear();
+        player.getInventory().addItem(new ItemStack(Material.SANDSTONE, 64), new ItemStack(Material.SANDSTONE, 64),new ItemStack(Material.SANDSTONE, 64));
+        player.setHealth(20);
+        player.setFoodLevel(20);
     }
     private final HashSet<Vector> placed_blocks = new HashSet<>();
     public class EventListener implements Listener{
+        @EventHandler
+        public void onDamage(EntityDamageEvent e){
+            e.setCancelled(true);
+        }
         @EventHandler
         public void onMove(PlayerMoveEvent e){
             if(e.getPlayer().equals(owner.orElse(null))){
