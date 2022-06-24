@@ -51,10 +51,7 @@ public class Plot {
     }
     private final HashSet<Vector> placed_blocks = new HashSet<>();
     public class EventListener implements Listener{
-        @EventHandler
-        public void onDamage(EntityDamageEvent e){
-            e.setCancelled(true);
-        }
+        
         @EventHandler
         public void onMove(PlayerMoveEvent e){
             if(e.getPlayer().equals(owner.orElse(null))){
@@ -75,12 +72,7 @@ public class Plot {
                 }
             }
         }
-        @EventHandler
-        public void onFallingBlockCollision(EntityChangeBlockEvent e){
-            if(e.getEntity() instanceof FallingBlock) {
-                e.setCancelled(true);
-            }
-        }
+        
         @EventHandler
         public void onBlockPlace(BlockPlaceEvent e) {
             if(e.getPlayer().equals(owner.orElse(null))){
@@ -110,8 +102,6 @@ public class Plot {
         owner.get().sendMessage("§e[BridgeTrainer] §aGood job! You took " + (System.currentTimeMillis() - started_time_milis)/1000 + "s to complete the bridge!");
         spawn_player(owner.get());
         reset_plot();
-        started = false;
-        started_time_milis = -1;
     }
     /**
      * This is called when the player looses
@@ -119,14 +109,12 @@ public class Plot {
      */
     private void player_lost(Player player){
         spawn_player(player);
-        reset_plot();
         if(started){
             owner.get().sendMessage("§e[BridgeTrainer] §cYou fell! §aYou took " + (System.currentTimeMillis() - started_time_milis)/1000 + "s!");
         }
-        started = false;
-        started_time_milis = -1;
+        reset_plot();
     }
-    private void reset_plot(){
+    public void reset_plot(){
         for(Vector block_pos : placed_blocks){
             Block block = spawn.getWorld().getBlockAt(block_pos.getBlockX(), block_pos.getBlockY(), block_pos.getBlockZ());
             Material old_material = block.getType();
@@ -149,5 +137,7 @@ public class Plot {
             }, 20*3);
         }
         placed_blocks.clear();
+        started = false;
+        started_time_milis = -1;
     }
 }
