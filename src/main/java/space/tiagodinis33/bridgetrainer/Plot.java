@@ -99,7 +99,7 @@ public class Plot {
                     old_material,
                     data
                 );
-            falling_block.setVelocity(new Vector(new Random().nextDouble() % 10, 0, new Random().nextDouble() % 10));
+            falling_block.setVelocity(new Vector(new Random().nextDouble() % 10, new Random().nextDouble() % 10, new Random().nextDouble() % 10));
             Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(BridgeTrainer.class), () -> {
                 falling_block.remove();
             }, 20*3);
