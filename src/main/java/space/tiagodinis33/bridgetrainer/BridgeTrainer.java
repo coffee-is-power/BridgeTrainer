@@ -17,6 +17,9 @@ public final class BridgeTrainer extends JavaPlugin {
     @Override
     public void onEnable() {
         plot.spawn_player(Bukkit.getPlayer("XtiagodinisX"));
+        plots.forEach((pl) -> {
+            Bukkit.getPluginManager().registerEvents(pl.new EventListener(), BridgeTrainer.this);
+        });
     }
 
     @Override
