@@ -4,14 +4,19 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
 public class Plot {
@@ -45,6 +50,12 @@ public class Plot {
             }
         }
         @EventHandler
+        public void onFallingBlockCollision(EntityChangeBlockEvent e){
+            if(e.getEntity() instanceof FallingBlock) {
+                e.setCancelled(true);
+            }
+        }
+        @EventHandler
         public void onBlockPlace(BlockPlaceEvent e) {
             if(e.getPlayer().equals(owner.orElse(null))){
                 bounds.correct_bounds();
@@ -73,7 +84,24 @@ public class Plot {
     private void reset_plot(){
         for(Vector block_pos : placed_blocks){
             Block block = spawn.getWorld().getBlockAt(block_pos.getBlockX(), block_pos.getBlockY(), block_pos.getBlockZ());
+            Material old_material = block.getType();
+            byte data = block.getData();
             block.setType(Material.AIR);
+            FallingBlock falling_block = spawn.getWorld()
+                .spawnFallingBlock(
+                    new Location(
+                        spawn.getWorld(),
+                        block_pos.getX(), 
+                        block_pos.getY(), 
+                        block_pos.getZ()
+                    ), 
+                    old_material,
+                    data
+                );
+            Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(BridgeTrainer.class), () -> {
+                falling_block.remove();
+            }, 20*3);
         }
+        placed_blocks.clear();
     }
 }
