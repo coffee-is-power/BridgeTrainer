@@ -62,15 +62,15 @@ public class Plot {
         }
         @EventHandler
         public void onPressurePlatePress(PlayerInteractEvent e){
-            if(e.getPlayer().equals(owner.get())){
-                if(e.getAction() == Action.PHYSICAL){
-                    if(e.getClickedBlock().getType() == Material.GOLD_PLATE){
-                        if(started){
-                            end();
-                        }
+            
+            if(e.getAction() == Action.PHYSICAL && owner.isPresent() && e.getPlayer().equals(owner.get())){
+                if(e.getClickedBlock().getType() == Material.GOLD_PLATE){
+                    if(started){
+                        end();
                     }
                 }
             }
+            
         }
         
         @EventHandler

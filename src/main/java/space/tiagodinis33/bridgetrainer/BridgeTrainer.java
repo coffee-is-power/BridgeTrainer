@@ -23,7 +23,7 @@ public final class BridgeTrainer extends JavaPlugin implements Listener {
         new Location(Bukkit.getWorld("world"), 103, 251, 102)
     );
     Plot plot2 = new Plot(
-        new AABB(84, 245, 90, 106, 256, 131), 
+        new AABB(84, 245, 90, 90, 256, 131), 
         new Location(Bukkit.getWorld("world"), 87, 251, 103)
     );
     HashSet<Plot> plots = Sets.newHashSet(plot1, plot2);
