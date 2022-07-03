@@ -1,0 +1,43 @@
+## Plot Object
+# This represents a space where players can bridge
+# Plot {
+#   bounds: AABB
+#   spawn: Location
+#   world: String
+# }
+
+
+## AABB object
+# This represents a bounding box
+# AABB {
+#   min: Location
+#   max: Location
+# }
+
+## Location Object
+# This represents a position in a 3 dimensional space
+# Location { x: Integer, y: Integer, z: Integer }
+
+
+# This is a list of Plot objects
+# See about plot objects on line 1
+# Example:
+#
+# plots:
+#   - bounds: 
+#      min:
+#        x: 100
+#        y: 245
+#        z: 96
+#      max:
+#        x: 106
+#        y: 256
+#        z: 131
+#    spawn:
+#      x: 87
+#      y: 251
+#      z: 103
+#    world: world
+plots:
+
+    

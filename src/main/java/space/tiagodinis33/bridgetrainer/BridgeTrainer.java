@@ -14,21 +14,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-
+import java.util.List;
 import com.google.common.collect.Sets;
 
 public final class BridgeTrainer extends JavaPlugin implements Listener {
-    Plot plot1 = new Plot(
-        new AABB(100, 245, 96, 106, 256, 131), 
-        new Location(Bukkit.getWorld("world"), 103, 251, 102)
-    );
-    Plot plot2 = new Plot(
-        new AABB(84, 245, 90, 90, 256, 131), 
-        new Location(Bukkit.getWorld("world"), 87, 251, 103)
-    );
-    HashSet<Plot> plots = Sets.newHashSet(plot1, plot2);
+    List<Plot> plots = null;
     @Override
     public void onEnable() {
+        plots = ConfigParser.getPlots(this);
         for(Player player : Bukkit.getOnlinePlayers()){
             Optional<Plot> plot_opt = request_plot();
             if(!plot_opt.isPresent()){
