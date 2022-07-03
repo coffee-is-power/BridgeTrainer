@@ -1,5 +1,6 @@
 package space.tiagodinis33.bridgetrainer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -7,15 +8,13 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.util.ArrayList;
 
 public class ConfigParser {
     public static List<Plot> getPlots(JavaPlugin plugin) {
         plugin.saveDefaultConfig();
         Configuration config = plugin.getConfig();
-        return new ArrayList(config.getMapList("plots").stream().map(map -> {
+        return new ArrayList<Plot>(config.getMapList("plots").stream().map(map -> {
             AABB bounds = getAABBFromMap((Map<?, ?>)map.get("bounds"));
             Map<?, ?> spawn = (Map<?, ?>) map.get("spawn");
             return new Plot(bounds, new Location(Bukkit.getWorld((String) map.get("world")), (Integer) spawn.get("x"), (Integer) spawn.get("y"), (Integer) spawn.get("z")));

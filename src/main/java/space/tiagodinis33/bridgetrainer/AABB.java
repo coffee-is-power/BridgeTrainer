@@ -1,7 +1,5 @@
 package space.tiagodinis33.bridgetrainer;
 
-import org.bukkit.entity.Player;
-
 public class AABB {
     int min_x;
     int min_y;

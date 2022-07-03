@@ -1,10 +1,9 @@
 package space.tiagodinis33.bridgetrainer;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,8 +13,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.util.List;
-import com.google.common.collect.Sets;
 
 public final class BridgeTrainer extends JavaPlugin implements Listener {
     List<Plot> plots = null;
